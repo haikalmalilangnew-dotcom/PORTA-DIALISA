@@ -7,7 +7,7 @@ import { BackupModal } from './components/BackupModal';
 import { GoogleSheetModal } from './components/GoogleSheetModal';
 import { ExportToSheetModal } from './components/ExportToSheetModal';
 import { CategoryType, WorkLink } from './types';
-import { DEFAULT_WORK_LINKS } from './data/defaultLinks';
+import { DEFAULT_WORK_LINKS, FIXED_GOOGLE_SHEET_URL } from './data/defaultLinks';
 import { fetchLinksFromGoogleSheet } from './utils/googleSheets';
 
 const STORAGE_KEYS = [
@@ -41,13 +41,17 @@ export default function App() {
   const [currentView, setCurrentView] = useState<'home' | CategoryType | 'favorites'>('home');
   const [saveSuccessMessage, setSaveSuccessMessage] = useState<string | null>(null);
 
-  // Google Sheets Realtime State
+  // Google Sheets Realtime State: Permanently fixed to the user's Google Sheet
   const [googleSheetUrl, setGoogleSheetUrl] = useState<string>(() => {
     try {
-      return localStorage.getItem(GSHEET_STORAGE_KEY) || '';
+      const saved = localStorage.getItem(GSHEET_STORAGE_KEY);
+      if (saved && saved.trim()) {
+        return saved;
+      }
     } catch {
-      return '';
+      // fallback
     }
+    return FIXED_GOOGLE_SHEET_URL;
   });
   const [isSyncingSheet, setIsSyncingSheet] = useState(false);
   const [isGoogleSheetModalOpen, setIsGoogleSheetModalOpen] = useState(false);
@@ -84,12 +88,33 @@ export default function App() {
     }
   }, [googleSheetUrl]);
 
-  // Initial Background Sync from Google Sheet if connected
+  // Realtime Auto-Sync: On mount, on window focus, and periodically every 60 seconds
   useEffect(() => {
-    if (googleSheetUrl) {
-      handleSyncSheet(googleSheetUrl, true);
+    const targetUrl = googleSheetUrl || FIXED_GOOGLE_SHEET_URL;
+    if (targetUrl) {
+      handleSyncSheet(targetUrl, true);
     }
-  }, []);
+
+    // Refresh when user returns to this browser tab (e.g. after editing sheet)
+    const handleFocus = () => {
+      if (targetUrl) {
+        handleSyncSheet(targetUrl, true);
+      }
+    };
+    window.addEventListener('focus', handleFocus);
+
+    // Periodic background sync every 60 seconds
+    const interval = setInterval(() => {
+      if (targetUrl) {
+        handleSyncSheet(targetUrl, true);
+      }
+    }, 60000);
+
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+      clearInterval(interval);
+    };
+  }, [googleSheetUrl]);
 
   const handleSyncSheet = async (url: string = googleSheetUrl, silent = false) => {
     if (!url) return;

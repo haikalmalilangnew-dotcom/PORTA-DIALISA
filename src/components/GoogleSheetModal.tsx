@@ -137,20 +137,33 @@ export const GoogleSheetModal: React.FC<GoogleSheetModalProps> = ({
               <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
               <div>
                 <div className="text-xs font-bold text-emerald-300">
-                  Status: Terhubung Aktif ke Google Sheet
+                  Status: Terhubung Aktif ke Google Sheet (Realtime)
                 </div>
                 <div className="text-[11px] font-mono text-slate-400 truncate max-w-xs sm:max-w-md">
-                  Sheet ID: {sheetId}
+                  ID: {sheetId}
                 </div>
               </div>
             </div>
-            <button
-              onClick={handleDisconnect}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-rose-500/30 bg-rose-500/10 text-xs font-semibold text-rose-300 hover:bg-rose-500/20 transition-colors self-start sm:self-auto"
-            >
-              <Unlink className="h-3.5 w-3.5" />
-              <span>Putus Hubungan</span>
-            </button>
+            <div className="flex items-center gap-2">
+              <a
+                href={currentSheetUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-xs font-semibold text-emerald-300 hover:bg-emerald-500/20 transition-colors"
+                title="Buka Google Sheet ini di tab baru untuk menambah atau mengedit link"
+              >
+                <ExternalLink className="h-3.5 w-3.5" />
+                <span>Buka Google Sheet</span>
+              </a>
+              <button
+                onClick={handleDisconnect}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-rose-500/30 bg-rose-500/10 text-xs font-semibold text-rose-300 hover:bg-rose-500/20 transition-colors"
+                title="Putus hubungan dari Google Sheet ini"
+              >
+                <Unlink className="h-3.5 w-3.5" />
+                <span>Putus</span>
+              </button>
+            </div>
           </div>
         ) : (
           <div className="mb-5 p-3.5 rounded-xl border border-white/[0.08] bg-white/[0.02] text-xs text-slate-300 leading-relaxed">
