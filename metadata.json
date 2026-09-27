@@ -1,0 +1,6 @@
+{
+  "name": "Portal Kerja - Data Managerial & Data Unit",
+  "description": "Portal akses cepat tanpa login untuk membuka seluruh link pekerjaan Data Managerial dan Data Unit.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

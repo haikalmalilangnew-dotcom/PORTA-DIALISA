@@ -1,0 +1,100 @@
+import React from 'react';
+import {
+  TrendingUp,
+  BarChart3,
+  Kanban,
+  CheckSquare,
+  Users,
+  FileText,
+  PieChart,
+  ShieldAlert,
+  ClipboardList,
+  Package,
+  AlertTriangle,
+  Calendar,
+  FileSpreadsheet,
+  BookOpen,
+  Cpu,
+  FolderGit2,
+  ExternalLink,
+  Layers,
+  Database,
+  Building,
+  Briefcase,
+  Video,
+  Droplets,
+  Award,
+  UserCheck,
+  Map,
+  Activity,
+  HeartPulse,
+  FileCheck,
+  ShieldCheck,
+  LucideProps,
+} from 'lucide-react';
+
+const iconMap: Record<string, React.FC<LucideProps>> = {
+  TrendingUp,
+  BarChart3,
+  Kanban,
+  CheckSquare,
+  Users,
+  FileText,
+  PieChart,
+  ShieldAlert,
+  ClipboardList,
+  Package,
+  AlertTriangle,
+  Calendar,
+  FileSpreadsheet,
+  BookOpen,
+  Cpu,
+  FolderGit2,
+  ExternalLink,
+  Layers,
+  Database,
+  Building,
+  Briefcase,
+  Video,
+  Droplets,
+  Award,
+  UserCheck,
+  Map,
+  Activity,
+  HeartPulse,
+  FileCheck,
+  ShieldCheck,
+};
+
+interface DynamicIconProps extends LucideProps {
+  name: string;
+}
+
+export const DynamicIcon: React.FC<DynamicIconProps> = ({ name, ...props }) => {
+  const IconComponent = iconMap[name] || Briefcase;
+  return <IconComponent {...props} />;
+};
+
+export const AVAILABLE_ICONS = [
+  'Video',
+  'Activity',
+  'BarChart3',
+  'BookOpen',
+  'Cpu',
+  'TrendingUp',
+  'Droplets',
+  'Users',
+  'UserCheck',
+  'Award',
+  'FileCheck',
+  'Package',
+  'Map',
+  'Calendar',
+  'ClipboardList',
+  'FileSpreadsheet',
+  'FileText',
+  'ShieldAlert',
+  'ShieldCheck',
+  'Briefcase',
+];
+
